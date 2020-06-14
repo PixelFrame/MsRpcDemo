@@ -26,10 +26,10 @@ int main(int argc, char* argv[])
     RPC_WSTR pszOptions = NULL;
     RPC_WSTR pszStringBinding = NULL;
     unsigned long ulCode;
+    int iPort = 0;
 
     if (argc == 3)
     {
-        int iPort = 0;
         sscanf_s(argv[2], "%d", &iPort);
         if (iPort < 1 || iPort > 65535)
         {
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
         pszOptions,
         &pszStringBinding);
     PrintRpcStatus("RpcStringBindingCompose", status);
-    std::cout << "RPC Server is " << argv[1] << std::endl;
+    std::cout << "RPC Server Address: " << argv[1] << ':' << iPort << std::endl;
     
     status = RpcBindingFromStringBinding(pszStringBinding, &RpcDemo_Binding);
     PrintRpcStatus("RpcBindingFromStringBinding", status);

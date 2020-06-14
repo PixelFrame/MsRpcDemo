@@ -25,12 +25,11 @@ int main(int argc, char* argv[])
     RPC_WSTR pszEndpoint = (RPC_WSTR)L"\\pipe\\RpcDemo";
     RPC_WSTR pszOptions = NULL;
     RPC_WSTR pszStringBinding = NULL;
-    RPC_WSTR pszString = (RPC_WSTR)L"hello, world";
     unsigned long ulCode;
 
-    if (argc != 3)
+    if (argc != 2)
     {
-        std::cout << "Usage: " << argv[0] << " <Server Name> <Hello Text>" << std::endl;
+        std::cout << "Usage: " << argv[0] << " <Server Name>" << std::endl;
         return 1;
     }
 
@@ -62,20 +61,28 @@ int main(int argc, char* argv[])
             pszOptions,
             &pszStringBinding);
         PrintRpcStatus("RpcStringBindingCompose", status);
-        std::cout << "Connecting \\\\" << argv[1] << "\\pipe\\RpcDemo" << std::endl;
+        std::cout << "RPC Server Address: \\\\" << argv[1] << "\\pipe\\RpcDemo" << std::endl;
     }
     status = RpcBindingFromStringBinding(pszStringBinding, &RpcDemo_Binding);
     PrintRpcStatus("RpcBindingFromStringBinding", status);
 
     RpcTryExcept
     {
-        if (strcmp(argv[2], "SHUTDOWN") == 0)
+        std::cout << "\n# Write your message now. \n  > Input Q/q to exit.\n  > Input SHUTDOWN to close server.\n\n";
+        char message[1024] = "\0";
+        while (std::cin >> message)
         {
-            Shutdown();
-        }
-        else
-        {
-            Hello((unsigned char *)argv[2]);
+            if (strcmp(message, "SHUTDOWN") == 0)
+            {
+                Shutdown();
+                break;
+            }
+            if (strcmp(message, "Q") == 0 || strcmp(message, "q") == 0)
+            {
+                break;
+            }
+            Hello((unsigned char*)message);
+            std::cout << "Message Sent" << std::endl;
         }
     }
     RpcExcept(1)
