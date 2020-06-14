@@ -41,6 +41,26 @@ int main(int argc, char* argv[])
     RPC_BINDING_VECTOR* rpcBindingVector;
     unsigned int cMinCalls = 1;
 
+    if (argc > 2)
+    {
+        std::cout << "Usage: " << argv[0] << " [<Port>]" << std::endl;
+        exit(1);
+    }
+    else if(argc > 1)
+    {
+        int iPort = 0;
+        sscanf_s(argv[1], "%d", &iPort);
+        if (iPort < 1 || iPort > 65535)
+        {
+            std::cout << "Invalid Port" << std::endl;
+            exit(1);
+        }
+
+        wchar_t pszPort[6];
+        wsprintf(pszPort, L"%d", iPort);
+        pszEndpoint = (RPC_WSTR)pszPort;
+    }
+
     status = RpcServerUseProtseqEp(pszProtocolSequence, 20, pszEndpoint, pszSecurity);
     PrintRpcStatus("RpcServerUseProtseq", status);
 
