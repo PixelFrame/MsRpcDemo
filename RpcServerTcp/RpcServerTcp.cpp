@@ -37,10 +37,11 @@ int main(int argc, char* argv[])
     RPC_STATUS status;
     RPC_WSTR pszProtocolSequence = (RPC_WSTR)L"ncacn_ip_tcp";
     RPC_WSTR pszSecurity = NULL;
+    RPC_WSTR pszEndpoint = NULL;
     RPC_BINDING_VECTOR* rpcBindingVector;
     unsigned int cMinCalls = 1;
 
-    status = RpcServerUseProtseq(pszProtocolSequence, 20, pszSecurity);
+    status = RpcServerUseProtseqEp(pszProtocolSequence, 20, pszEndpoint, pszSecurity);
     PrintRpcStatus("RpcServerUseProtseq", status);
 
     status = RpcServerInqBindings(&rpcBindingVector);
@@ -49,7 +50,7 @@ int main(int argc, char* argv[])
     status = RpcEpRegister(RpcDemo_v1_0_s_ifspec, rpcBindingVector, NULL, NULL);
     PrintRpcStatus("RpcEpRegister", status);
 
-    status = RpcServerRegisterIf(RpcDemo_v1_0_s_ifspec, NULL, NULL);
+    status = RpcServerRegisterIfEx(RpcDemo_v1_0_s_ifspec, NULL, NULL, RPC_IF_ALLOW_CALLBACKS_WITH_NO_AUTH, 20, NULL);
     PrintRpcStatus("RpcServerRegisterIf", status);
 
     status = RpcServerListen(cMinCalls, 20, FALSE);
