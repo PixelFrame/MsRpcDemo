@@ -25,45 +25,32 @@ int main(int argc, char* argv[])
     RPC_WSTR pszEndpoint = NULL;
     RPC_WSTR pszOptions = NULL;
     RPC_WSTR pszStringBinding = NULL;
-    RPC_WSTR pszString = (RPC_WSTR)L"hello, world";
     unsigned long ulCode;
 
-    if (argc != 3)
+    if (argc < 3)
     {
         std::cout << "Usage: " << argv[0] << " <Server Name> <Hello Text>" << std::endl;
         return 1;
     }
 
-    if (strcmp(argv[1], ".") == 0)
-    {
-        status = RpcStringBindingCompose(pszUuid,
-            pszProtocolSequence,
-            pszNetworkAddress,
-            pszEndpoint,
-            pszOptions,
-            &pszStringBinding);
-        PrintRpcStatus("RpcStringBindingCompose", status);
-    }
-    else
-    {
-        wchar_t netAddr[255] = L"\\\\";
-        int wchars_num = MultiByteToWideChar(CP_UTF8, 0, argv[1], -1, NULL, 0);
-        wchar_t* wargv = new wchar_t[wchars_num];
-        MultiByteToWideChar(CP_UTF8, 0, argv[1], -1, wargv, wchars_num);
+    wchar_t netAddr[255];
+    int wchars_num = MultiByteToWideChar(CP_UTF8, 0, argv[1], -1, NULL, 0);
+    wchar_t* wargv = new wchar_t[wchars_num];
+    MultiByteToWideChar(CP_UTF8, 0, argv[1], -1, wargv, wchars_num);
 
-        wcscat_s(netAddr, 255, wargv);
-        delete[] wargv;
-        pszNetworkAddress = (RPC_WSTR)netAddr;
+    wcscpy_s(netAddr, 255, wargv);      // Copy Network Address to Heap
+    pszNetworkAddress = (RPC_WSTR)netAddr;
+    delete[] wargv;
 
-        status = RpcStringBindingCompose(pszUuid,
-            pszProtocolSequence,
-            pszNetworkAddress,
-            pszEndpoint,
-            pszOptions,
-            &pszStringBinding);
-        PrintRpcStatus("RpcStringBindingCompose", status);
-        std::cout << "Connecting \\\\" << argv[1] << std::endl;
-    }
+    status = RpcStringBindingCompose(pszUuid,
+        pszProtocolSequence,
+        pszNetworkAddress,
+        pszEndpoint,
+        pszOptions,
+        &pszStringBinding);
+    PrintRpcStatus("RpcStringBindingCompose", status);
+    std::cout << "Connecting " << argv[1] << std::endl;
+    
     status = RpcBindingFromStringBinding(pszStringBinding, &RpcDemo_Binding);
     PrintRpcStatus("RpcBindingFromStringBinding", status);
 
