@@ -1,0 +1,9 @@
+[
+    uuid(89a2a56f-0bd9-4c5f-9cc1-92ad65c38a19),
+    version(1.0)
+]
+interface RpcDemo
+{
+    void Hello([in, string]const char* psz);
+    void Shutdown(void);
+}
