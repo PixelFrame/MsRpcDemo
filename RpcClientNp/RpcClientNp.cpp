@@ -68,6 +68,19 @@ int main(int argc, char* argv[])
 
     RpcTryExcept
     {
+        DWORD dwSize = MAX_COMPUTERNAME_LENGTH + 1;
+        char pszHostname[MAX_COMPUTERNAME_LENGTH + 1] = "\0";
+        GetComputerNameA(pszHostname, &dwSize);
+        int nTestResult = ConnTest((unsigned char*)pszHostname);
+        if (nTestResult != 0)
+        {
+            throw RPC_E_CONNECTION_TERMINATED;
+        }
+        else
+        {
+            std::cout << "Connection Test Successful!" << std::endl;
+        }
+
         std::cout << "\n# Write your message now. \n  > Input Q/q to exit.\n  > Input SHUTDOWN to close server.\n\n";
         char message[1024] = "\0";
         while (std::cin >> message)

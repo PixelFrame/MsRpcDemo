@@ -21,6 +21,12 @@ void Hello(const unsigned char* psz)
     std::cout << "Get Message From Client: " << psz << std::endl;
 }
 
+int ConnTest(const unsigned char* psz)
+{
+    std::cout << "Connected by Client: " << psz << std::endl;
+    return 0;
+}
+
 void Shutdown(void)
 {
     RPC_STATUS status;

@@ -18,11 +18,19 @@ void PrintRpcStatus(const char* function, RPC_STATUS status)
 
 void Hello(const unsigned char* psz)
 {
-    std::cout << "Get Message From Client: " << psz << std::endl;
+    std::cout << "Received Message From Client: " << psz << std::endl;
+}
+
+int ConnTest(const unsigned char* psz)
+{
+    std::cout << "Connected by Client: " << psz << std::endl;
+    return 0;
 }
 
 void Shutdown(void)
 {
+    std::cout << "Received SHUTDOWN from Client" << std::endl;
+
     RPC_STATUS status;
 
     status = RpcMgmtStopServerListening(NULL);

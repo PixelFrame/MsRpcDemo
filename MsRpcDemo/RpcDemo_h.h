@@ -54,6 +54,9 @@ extern "C"{
 void Hello( 
     /* [string][in] */ const unsigned char *psz);
 
+int ConnTest( 
+    /* [string][in] */ const unsigned char *psz);
+
 void Shutdown( void);
 
 

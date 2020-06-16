@@ -35,7 +35,7 @@
 #include "RpcDemo_h.h"
 
 #define TYPE_FORMAT_STRING_SIZE   7                                 
-#define PROC_FORMAT_STRING_SIZE   55                                
+#define PROC_FORMAT_STRING_SIZE   91                                
 #define EXPR_FORMAT_STRING_SIZE   1                                 
 #define TRANSMIT_AS_TABLE_SIZE    0            
 #define WIRE_MARSHAL_TABLE_SIZE   0            
@@ -107,12 +107,27 @@ void Hello(
 }
 
 
+int ConnTest( 
+    /* [string][in] */ const unsigned char *psz)
+{
+
+    CLIENT_CALL_RETURN _RetVal;
+
+    _RetVal = NdrClientCall2(
+                  ( PMIDL_STUB_DESC  )&RpcDemo_StubDesc,
+                  (PFORMAT_STRING) &RpcDemo__MIDL_ProcFormatString.Format[30],
+                  ( unsigned char * )&psz);
+    return ( int  )_RetVal.Simple;
+    
+}
+
+
 void Shutdown( void)
 {
 
     NdrClientCall2(
                   ( PMIDL_STUB_DESC  )&RpcDemo_StubDesc,
-                  (PFORMAT_STRING) &RpcDemo__MIDL_ProcFormatString.Format[30],
+                  (PFORMAT_STRING) &RpcDemo__MIDL_ProcFormatString.Format[66],
                   ( unsigned char * )0);
     
 }
@@ -157,22 +172,52 @@ static const RpcDemo_MIDL_PROC_FORMAT_STRING RpcDemo__MIDL_ProcFormatString =
 /* 26 */	NdrFcShort( 0x0 ),	/* x86 Stack size/offset = 0 */
 /* 28 */	NdrFcShort( 0x4 ),	/* Type Offset=4 */
 
-	/* Procedure Shutdown */
+	/* Procedure ConnTest */
 
 /* 30 */	0x32,		/* FC_BIND_PRIMITIVE */
 			0x48,		/* Old Flags:  */
 /* 32 */	NdrFcLong( 0x0 ),	/* 0 */
 /* 36 */	NdrFcShort( 0x1 ),	/* 1 */
-/* 38 */	NdrFcShort( 0x0 ),	/* x86 Stack size/offset = 0 */
+/* 38 */	NdrFcShort( 0x8 ),	/* x86 Stack size/offset = 8 */
 /* 40 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 42 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 44 */	0x40,		/* Oi2 Flags:  has ext, */
-			0x0,		/* 0 */
+/* 42 */	NdrFcShort( 0x8 ),	/* 8 */
+/* 44 */	0x46,		/* Oi2 Flags:  clt must size, has return, has ext, */
+			0x2,		/* 2 */
 /* 46 */	0x8,		/* 8 */
 			0x1,		/* Ext Flags:  new corr desc, */
 /* 48 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 50 */	NdrFcShort( 0x0 ),	/* 0 */
 /* 52 */	NdrFcShort( 0x0 ),	/* 0 */
+
+	/* Parameter psz */
+
+/* 54 */	NdrFcShort( 0x10b ),	/* Flags:  must size, must free, in, simple ref, */
+/* 56 */	NdrFcShort( 0x0 ),	/* x86 Stack size/offset = 0 */
+/* 58 */	NdrFcShort( 0x4 ),	/* Type Offset=4 */
+
+	/* Return value */
+
+/* 60 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
+/* 62 */	NdrFcShort( 0x4 ),	/* x86 Stack size/offset = 4 */
+/* 64 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Procedure Shutdown */
+
+/* 66 */	0x32,		/* FC_BIND_PRIMITIVE */
+			0x48,		/* Old Flags:  */
+/* 68 */	NdrFcLong( 0x0 ),	/* 0 */
+/* 72 */	NdrFcShort( 0x2 ),	/* 2 */
+/* 74 */	NdrFcShort( 0x0 ),	/* x86 Stack size/offset = 0 */
+/* 76 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 78 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 80 */	0x40,		/* Oi2 Flags:  has ext, */
+			0x0,		/* 0 */
+/* 82 */	0x8,		/* 8 */
+			0x1,		/* Ext Flags:  new corr desc, */
+/* 84 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 86 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 88 */	NdrFcShort( 0x0 ),	/* 0 */
 
 			0x0
         }
@@ -196,7 +241,8 @@ static const RpcDemo_MIDL_TYPE_FORMAT_STRING RpcDemo__MIDL_TypeFormatString =
 static const unsigned short RpcDemo_FormatStringOffsetTable[] =
     {
     0,
-    30
+    30,
+    66
     };
 
 
